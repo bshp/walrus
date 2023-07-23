@@ -46,7 +46,6 @@ if [[ ! -z "${VADC_IP_ADDRESS}" ]];then
     else 
         a2enmod remoteip 
         VADC_IP_REG=$(echo "${VADC_IP_ADDRESS}" | sed -e 's/\s/\|/g')
-        TOMCAT_SERVER_CFG=/opt/tomcat/conf/server.xml
         MOD_REMOTE_IP=$(cat <<-EOF
 <IfModule remoteip_module>
     RemoteIPInternalProxy ${VADC_IP_ADDRESS}
