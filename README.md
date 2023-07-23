@@ -1,4 +1,3 @@
-# apache2 and php
 Apache with PHP    
     
 ````
@@ -9,5 +8,5 @@ docker run \
   --env CA_URL="https://YOUR_CA_URL/" \
   --env VADC_IP_ADDRESS="YOUR_LOAD_BALANCER_IP" \
   --env VADC_IP_HEADER="YOUR_IP_HEADER" \
-  --detach --name httpd bshp/httpd_php:latest
+  --detach --name httpd bshp/walrus:latest
 ````  
