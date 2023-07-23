@@ -1,0 +1,25 @@
+name: Docker CI
+on:
+  push:
+    branches: [ master ]
+    paths-ignore:
+      - '.gitignore'
+      - 'README.md'
+  schedule:
+    - cron:  '15 3 * * 0'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Configure Docker
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_TOKEN: ${{secrets.DOCKER_TOKEN}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_TOKEN
+    - name: Build
+      run: docker build . --tag bshp/walrus:latest --progress=plain
+    - name: Push
+      run: |
+        docker push bshp/walrus:latest
