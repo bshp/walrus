@@ -1,18 +1,24 @@
 #!/bin/bash
 set -ex;
     
+## Defaults ##
+GEN_KEYS=${GEN_KEYS:-none};
+CA_URL=${CA_URL:-none};
+VADC_IP_ADDRESS=${VADC_IP_ADDRESS:-none};
+VADC_IP_HEADER=${VADC_IP_HEADER:-none};
+
 ## Keygen ##
 echo "Keygen: Checking for certificate generation"
 if [[ -f "/etc/ssl/server.key" ]] || [[ -f "/etc/ssl/server.pem" ]];then
     echo "Keygen: Certificate exist, checking if one should be generated"
 else
     echo "Keygen: Certificate DOES NOT exist"
-    export GEN_KEYS=true
+    GEN_KEYS=true;
 fi
     
 if [ ${GEN_KEYS} = true ];then
     echo "Keygen: New Certificate will be generated"
-    openssl dhparam -out /etc/ssl/dhparams.pem 2048 && \
+    openssl dhparam -out /etc/ssl/dhparams.pem 2048
     openssl req -newkey rsa:2048 -x509 -nodes \
         -keyout /etc/ssl/server.key -new \
         -out /etc/ssl/server.pem \
@@ -24,7 +30,7 @@ echo "Keygen: Finished, Certificate Thumbprint: $PEM_SHA1"
 ############
     
 echo "CA Certificates: Checking for CA Import"
-if [[ ! -z "${CA_URL}" ]];then
+if [ "${CA_URL}" != "none" ];then
     echo "CA Certificates: The following URL will be searched ${CA_URL}"
     LOCAL_STORE="/usr/local/share/ca-certificates"
     cd /usr/local/share/ca-certificates
@@ -34,14 +40,15 @@ if [[ ! -z "${CA_URL}" ]];then
         ${JAVA_HOME}/bin/keytool -import -trustcacerts -cacerts -storepass changeit -noprompt -alias "$CA_NAME" -file $CA_CRT >/dev/null 2>&1 | echo "CA Certificates: Added certificate to cacert, $CA_CRT"
     done
     update-ca-certificates
+    cd /
 else 
     echo "CA Certificates: Nothing to import, CA_URL is not defined"
 fi
     
 echo "Remote IP: Checking for Remote IP settings"
-if [[ ! -z "${VADC_IP_ADDRESS}" ]];then
+if [ "${VADC_IP_ADDRESS}" != "none" ];then
     echo "Remote IP: Found load a balancer ip address set, ${VADC_IP_ADDRESS} , attempting to configure modules"
-    if [[ -z "${VADC_IP_HEADER}" ]];then
+    if [ "${VADC_IP_HEADER}"  == "none" ];then
         echo "Remote IP: Found load a balancer ip address set but VADC_IP_HEADER was not found and is required, NOT configuring modules"
     else 
         a2enmod remoteip 
@@ -51,7 +58,8 @@ if [[ ! -z "${VADC_IP_ADDRESS}" ]];then
     RemoteIPInternalProxy ${VADC_IP_ADDRESS}
     RemoteIPHeader ${VADC_IP_HEADER}
 </IfModule>
-EOF)
+EOF
+);
         echo "$MOD_REMOTE_IP" > /etc/apache2/mods-enabled/remoteip.conf
         echo "Remote IP: Apache2 module configured"
     fi
