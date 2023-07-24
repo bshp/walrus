@@ -46,7 +46,7 @@ RUN set eux; \
     php-pear; \
     echo "; Custom PHP Settings" > /etc/php/01-custom.ini; \
     ln -s /etc/php/01-custom.ini /etc/php/${PHP_VERSION}/apache2/conf.d/01-custom.ini; \
-    mkdir /var/log/php && chown -R www-data:www-data && chmod -R 0750; \
+    mkdir /var/log/php && chown -R www-data:www-data /var/log/php && chmod -R 0750 /var/log/php; \
     echo "Finished installing base system";
 
 RUN set eux; \
@@ -73,9 +73,7 @@ COPY ./src/ ./
 
 RUN set eux; \
     chown root:root /usr/local/bin/entrypoint.sh; \
-    chmod a+x /usr/local/bin/entrypoint.sh
-
-VOLUME ["/var/www/html", "/var/log/apache2", "/var/log/php"]
+    chmod a+x /usr/local/bin/entrypoint.sh;
 
 EXPOSE 80 443
 
