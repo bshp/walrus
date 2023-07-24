@@ -65,6 +65,9 @@ RUN set eux; \
 
 COPY ./src/ ./
 
+RUN set eux; \
+    chown root:root /usr/local/bin/entrypoint.sh && chmod a+x /usr/local/bin/entrypoint.sh
+
 VOLUME ["/var/www/html", "/var/log/apache2", "/var/log/php"]
 
 EXPOSE 80 443
