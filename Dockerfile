@@ -57,8 +57,9 @@ RUN set eux; \
     OS_VERSION=$(echo "${OS_BASE}" | sed 's/[^0-9]*//g'); \
     OS_CODENAME=$(sed -n 's/^VERSION_CODENAME=\(.*\)/\1/p' </etc/os-release); \
     SQL_CAT=$(echo "${PHP_VERSION}" | sed 's/[^0-9]*//g'); \
-    wget --quiet "https://packages.microsoft.com/keys/microsoft.asc" -O- | apt-key add -; \
-    wget --quiet "https://packages.microsoft.com/config/ubuntu/${OS_BASE}/prod.list" -O /etc/apt/sources.list.d/mssql-release.list; \
+    wget --quiet "https://packages.microsoft.com/keys/microsoft.asc" -O- | gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg; \
+    echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/ubuntu/${OS_BASE}/prod ${OS_CODENAME} main" \
+        | tee /etc/apt/sources.list.d/microsoft-prod.list > /dev/null; \
     wget --quiet "https://github.com/microsoft/msphpsql/releases/download/v${SQL_VERSION}/Ubuntu${OS_VERSION}-${PHP_VERSION}.tar" -O $SQL_TMP/mssql.tar; \
     tar -xf $SQL_TMP/mssql.tar -C $SQL_TMP --strip-components=1; \
     mv $SQL_TMP/php_sqlsrv_${SQL_CAT}_nts.so $EXT_DIR/sqlsrv.so && mv $SQL_TMP/php_pdo_sqlsrv_${SQL_CAT}_nts.so $EXT_DIR/pdo_sqlsrv.so; \
