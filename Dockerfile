@@ -30,6 +30,7 @@ RUN set eux; \
     php-cli \
     php-dev \
     php-gd \
+    php-iconv \
     php-intl \
     php-json \
     php-ldap \
@@ -37,16 +38,18 @@ RUN set eux; \
     php-mysql \
     php-odbc \
     php-opcache \
+    php-pdo \
     php-pspell \
     php-readline \
+    php-shmop \
     php-soap \
+    php-sqlite3 \
     php-xml \
     php-xmlrpc \
     php-zip \
     php-pear; \
     echo "; Custom PHP Settings" > /etc/php/01-custom.ini; \
     ln -s /etc/php/01-custom.ini /etc/php/${PHP_VERSION}/apache2/conf.d/01-custom.ini; \
-    mkdir /var/log/php && chown -R www-data:www-data /var/log/php && chmod -R 0750 /var/log/php; \
     echo "Finished installing base system";
 
 RUN set eux; \
@@ -73,8 +76,10 @@ RUN set eux; \
 COPY ./src/ ./
 
 RUN set eux; \
+    mkdir /var/log/php && chmod -R 0755 /var/log/php; \
     chown root:root /usr/local/bin/entrypoint.sh; \
     chmod a+x /usr/local/bin/entrypoint.sh;
+    
 
 EXPOSE 80 443
 

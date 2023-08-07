@@ -67,6 +67,7 @@ else
     echo "Remote IP: Did not find VADC_IP_ADDRESS and VADC_IP_HEADER, NOT configuring modules"
 fi
     
+exec "$@"
 echo "Initialization complete, container ready"
-
+    
 apachectl -k start -D FOREGROUND
