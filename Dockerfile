@@ -43,11 +43,13 @@ RUN set eux; \
     php-readline \
     php-shmop \
     php-soap \
+    php-simplexml \
     php-sqlite3 \
     php-xml \
     php-xmlrpc \
     php-zip \
-    php-pear; \
+    php-pear \
+    php-xdebug; \
     echo "; Custom PHP Settings" > /etc/php/01-custom.ini; \
     ln -s /etc/php/01-custom.ini /etc/php/${PHP_VERSION}/apache2/conf.d/01-custom.ini; \
     echo "Finished installing base system";
