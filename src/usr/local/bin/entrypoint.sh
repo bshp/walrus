@@ -71,6 +71,7 @@ fi
 if [ "${APACHE_LOG}" != "none" ];then
     echo "Apache Config: APACHE_LOG is defined, setting log location to ${APACHE_LOG}"
     sed -i "s|APACHE_LOG_DIR=.*|APACHE_LOG_DIR=${APACHE_LOG}|g" /etc/apache2/envvars
+    sed -i "s|/var/log/apache2/\*.log|${APACHE_LOG}/\*.log|g" /etc/logrotate.d/apache2
 else 
     echo "Apache Config: Using default log location, APACHE_LOG is not defined"
 fi
