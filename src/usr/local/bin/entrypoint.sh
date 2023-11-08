@@ -6,6 +6,7 @@ GEN_KEYS=${GEN_KEYS:-none};
 CA_URL=${CA_URL:-none};
 VADC_IP_ADDRESS=${VADC_IP_ADDRESS:-none};
 VADC_IP_HEADER=${VADC_IP_HEADER:-none};
+APACHE_LOG=${APACHE_LOG:-none};
 
 ## Keygen ##
 echo "Keygen: Checking for certificate generation"
@@ -65,6 +66,13 @@ EOF
     fi
 else 
     echo "Remote IP: Did not find VADC_IP_ADDRESS and VADC_IP_HEADER, NOT configuring modules"
+fi
+
+if [ "${APACHE_LOG}" != "none" ];then
+    echo "Apache Config: APACHE_LOG is defined, setting log location to ${APACHE_LOG}"
+    sed -i "s|APACHE_LOG_DIR=.*|APACHE_LOG_DIR=${APACHE_LOG}|g" /etc/apache2/envvars
+else 
+    echo "Apache Config: Using default log location, APACHE_LOG is not defined"
 fi
     
 exec "$@"
