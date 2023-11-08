@@ -7,7 +7,7 @@ CA_URL=${CA_URL:-none};
 VADC_IP_ADDRESS=${VADC_IP_ADDRESS:-none};
 VADC_IP_HEADER=${VADC_IP_HEADER:-none};
 APACHE_LOG=${APACHE_LOG:-none};
-
+    
 ## Keygen ##
 echo "Keygen: Checking for certificate generation"
 if [[ -f "/etc/ssl/server.key" ]] || [[ -f "/etc/ssl/server.pem" ]];then
