@@ -7,6 +7,7 @@ CA_URL=${CA_URL:-none};
 VADC_IP_ADDRESS=${VADC_IP_ADDRESS:-none};
 VADC_IP_HEADER=${VADC_IP_HEADER:-none};
 APACHE_LOG=${APACHE_LOG:-none};
+REWRITE=${REWRITE:-none};
     
 ## Keygen ##
 echo "Keygen: Checking for certificate generation"
@@ -74,6 +75,18 @@ if [ "${APACHE_LOG}" != "none" ];then
     sed -i "s|/var/log/apache2/\*.log|${APACHE_LOG}/\*.log|g" /etc/logrotate.d/apache2
 else 
     echo "Apache Config: Using default log location, APACHE_LOG is not defined"
+fi
+    
+if [ "${REWRITE}" != "none" ];then
+    echo "Apache Config: REWRITE is defined, attempting to add rewrite config to enabled site"
+    FILE="/usr/local/share/apache2/${REWRITE,,}.rewrite"
+    if [ -f $FILE ]; then
+        sed -i -e "/#REWRITE/{r$FILE" -e "d}" /etc/apache2/sites-enabled/default-ssl.conf
+    else 
+        echo "Rewrite config ${REWRITE} does not exist, skipping."
+    fi
+else 
+    echo "Apache Config: Using default site without rewrite, REWRITE is not defined"
 fi
     
 exec "$@"

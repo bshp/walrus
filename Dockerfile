@@ -5,6 +5,14 @@ MAINTAINER jason.everling@gmail.com
 ARG PHP_VERSION=8.1
 ARG SQL_VERSION=5.11.0
 
+ENV PHP_TIMEZONE=America/North_Dakota/Center
+ENV PHP_ERROR_LOG=/var/log/apache2/php_error.log
+ENV PHP_MAX_EXECUTION_TIME=60
+ENV PHP_MAX_INPUT_TIME=60
+ENV PHP_MEMORY_LIMIT=128M
+ENV PHP_POST_MAX_SIZE=8M
+ENV PHP_UPLOAD_MAX_FILESIZE=8M
+
 RUN set eux; \
     apt-get update && apt-get install --no-install-recommends -y \
     gnupg \
