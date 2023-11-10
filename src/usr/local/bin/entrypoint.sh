@@ -37,10 +37,6 @@ if [ "${CA_URL}" != "none" ];then
     LOCAL_STORE="/usr/local/share/ca-certificates"
     cd /usr/local/share/ca-certificates
     wget -r -nH -A *_CA.crt ${CA_URL}
-    for CA_CRT in /usr/local/share/ca-certificates/*.crt; do
-        CA_NAME=$(openssl x509 -noout -subject -nameopt multiline -in $CA_CRT | sed -n 's/ *commonName *= //p')
-        ${JAVA_HOME}/bin/keytool -import -trustcacerts -cacerts -storepass changeit -noprompt -alias "$CA_NAME" -file $CA_CRT >/dev/null 2>&1 | echo "CA Certificates: Added certificate to cacert, $CA_CRT"
-    done
     update-ca-certificates
     cd /
 else 
