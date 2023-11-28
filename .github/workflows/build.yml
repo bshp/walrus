@@ -19,7 +19,7 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_TOKEN
     - name: Build
-      run: docker build . --tag bshp/walrus:latest --progress=plain
+      run: docker build . --pull --tag bshp/walrus:latest --progress=plain
     - name: Push
       run: |
         docker push bshp/walrus:latest

@@ -1,4 +1,8 @@
         RewriteEngine On
+        #Exclude Acme
+        RewriteRule ^(\/\.well\-known\/acme\-challenge.*) - [L]
+        #Exclude User Defined
+        #REWRITE_EXCLUDE
         RewriteCond %{REQUEST_FILENAME} !-d
         RewriteRule ^(.+)\/$ $1 [NE,R=301,L,QSA]
         RewriteCond %{REQUEST_FILENAME} !-d

@@ -2,84 +2,26 @@
 set -ex;
     
 ## Defaults ##
-GEN_KEYS=${GEN_KEYS:-none};
 CA_URL=${CA_URL:-none};
-VADC_IP_ADDRESS=${VADC_IP_ADDRESS:-none};
-VADC_IP_HEADER=${VADC_IP_HEADER:-none};
-APACHE_LOG=${APACHE_LOG:-none};
-REWRITE=${REWRITE:-none};
+REWRITE_TYPE=${REWRITE_TYPE:-none};
+REWRITE_EXCLUDE=${REWRITE_EXCLUDE:-none};
     
-## Keygen ##
-echo "Keygen: Checking for certificate generation"
-if [[ -f "/etc/ssl/server.key" ]] || [[ -f "/etc/ssl/server.pem" ]];then
-    echo "Keygen: Certificate exist, checking if one should be generated"
-else
-    echo "Keygen: Certificate DOES NOT exist"
-    GEN_KEYS=true;
-fi
-    
-if [ ${GEN_KEYS} = true ];then
-    echo "Keygen: New Certificate will be generated"
-    openssl dhparam -out /etc/ssl/dhparams.pem 2048
-    openssl req -newkey rsa:2048 -x509 -nodes \
-        -keyout /etc/ssl/server.key -new \
-        -out /etc/ssl/server.pem \
-        -subj /CN=localhost -sha256 -days 3650
-fi
-    
-PEM_SHA1=$(openssl x509 -noout -fingerprint -sha1 -in /etc/ssl/server.pem | cut -f2 -d"=" | sed "s/://g" | awk '{print tolower($0)}')
-echo "Keygen: Finished, Certificate Thumbprint: $PEM_SHA1"
-############
-    
-echo "CA Certificates: Checking for CA Import"
 if [ "${CA_URL}" != "none" ];then
-    echo "CA Certificates: The following URL will be searched ${CA_URL}"
-    LOCAL_STORE="/usr/local/share/ca-certificates"
-    cd /usr/local/share/ca-certificates
-    wget -r -nH -A *_CA.crt ${CA_URL}
-    update-ca-certificates
-    cd /
+    /usr/local/bin/cert-updater -p "${CA_URL}";
 else 
-    echo "CA Certificates: Nothing to import, CA_URL is not defined"
+    echo "CA Certificates: Nothing to import, CA_URL is not defined";
 fi
     
-echo "Remote IP: Checking for Remote IP settings"
-if [ "${VADC_IP_ADDRESS}" != "none" ];then
-    echo "Remote IP: Found load a balancer ip address set, ${VADC_IP_ADDRESS} , attempting to configure modules"
-    if [ "${VADC_IP_HEADER}"  == "none" ];then
-        echo "Remote IP: Found load a balancer ip address set but VADC_IP_HEADER was not found and is required, NOT configuring modules"
-    else 
-        a2enmod remoteip 
-        VADC_IP_REG=$(echo "${VADC_IP_ADDRESS}" | sed -e 's/\s/\|/g')
-        MOD_REMOTE_IP=$(cat <<-EOF
-<IfModule remoteip_module>
-    RemoteIPInternalProxy ${VADC_IP_ADDRESS}
-    RemoteIPHeader ${VADC_IP_HEADER}
-</IfModule>
-EOF
-);
-        echo "$MOD_REMOTE_IP" > /etc/apache2/mods-enabled/remoteip.conf
-        echo "Remote IP: Apache2 module configured"
-    fi
-else 
-    echo "Remote IP: Did not find VADC_IP_ADDRESS and VADC_IP_HEADER, NOT configuring modules"
-fi
-
-if [ "${APACHE_LOG}" != "none" ];then
-    echo "Apache Config: APACHE_LOG is defined, setting log location to ${APACHE_LOG}"
-    sed -i "s|APACHE_LOG_DIR=.*|APACHE_LOG_DIR=${APACHE_LOG}|g" /etc/apache2/envvars
-    sed -i "s|/var/log/apache2/\*.log|${APACHE_LOG}/\*.log|g" /etc/logrotate.d/apache2
-else 
-    echo "Apache Config: Using default log location, APACHE_LOG is not defined"
-fi
-    
-if [ "${REWRITE}" != "none" ];then
-    echo "Apache Config: REWRITE is defined, attempting to add rewrite config to enabled site"
-    FILE="/usr/local/share/apache2/${REWRITE,,}.rewrite"
-    if [ -f $FILE ]; then
+if [ "${REWRITE_TYPE}" != "none" ];then
+    echo "Apache Config: REWRITE_TYPE is defined, attempting to add rewrite config to enabled site"
+    FILE="/usr/local/share/apache2/${REWRITE_TYPE,,}.rewrite"
+    if [ -f $FILE ];then
         sed -i -e "/#REWRITE/{r$FILE" -e "d}" /etc/apache2/sites-enabled/default-ssl.conf
-    else 
-        echo "Rewrite config ${REWRITE} does not exist, skipping."
+        echo "Apache Config: Using rewrite template ${FILE}";
+        if [ "${REWRITE_EXCLUDE}" != "none" ];then
+            echo "Apache Config: REWRITE_EXCLUDE is defined, setting rewrite to ignore the matched pattern ${REWRITE_EXCLUDE}"
+            sed -i "s@#REWRITE_EXCLUDE@a$(printf %q "        RewriteRule ${REWRITE_EXCLUDE} - [L]")@g" /etc/apache2/sites-enabled/default-ssl.conf
+        fi
     fi
 else 
     echo "Apache Config: Using default site without rewrite, REWRITE is not defined"

@@ -1,4 +1,8 @@
         RewriteEngine On
+        #Exclude Acme
+        RewriteRule ^(\/\.well\-known\/acme\-challenge.*) - [L]
+        #Exclude User Defined
+        #REWRITE_EXCLUDE
         #Forward/Set the Authorization Header for Basic/Bearer
         RewriteCond %{HTTP:Authorization} ^(.*)
         RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
