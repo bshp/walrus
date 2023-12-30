@@ -1,10 +1,10 @@
 FROM bshp/apache2:latest
-
+    
 LABEL org.opencontainers.image.authors="jason.everling@gmail.com"
-
+    
 ARG PHP_VERSION=8.1
 ARG SQL_VERSION=5.11.0
-
+    
 ENV WALRUS_HOME=/etc/walrus
 ENV WALRUS_BOOT=${WALRUS_HOME}/boot.ini
 ENV PHP_VERSION=${PHP_VERSION}
@@ -16,7 +16,7 @@ ENV PHP_MEMORY_LIMIT=128M
 ENV PHP_POST_MAX_SIZE=8M
 ENV PHP_UPLOAD_MAX_FILESIZE=8M
 ENV SQL_VERSION=${SQL_VERSION}
-
+    
 RUN set eux; \
     wget --quiet "https://packages.microsoft.com/keys/microsoft.asc" -O- | gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg; \
     echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/ubuntu/${OS_BASE}/prod ${OS_CODENAME} main" \
@@ -75,7 +75,7 @@ RUN set eux; \
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
     rm -rf /var/lib/apt/lists/*; \
     echo "Finished installing base system";
-
+    
 RUN set eux; \
     echo "Installing SQL Server PHP Extensions"; \
     EXT_DIR=$(php-config --extension-dir); \
@@ -89,13 +89,9 @@ RUN set eux; \
     printf "; priority=30\nextension=pdo_sqlsrv.so\n" > /etc/php/${PHP_VERSION}/apache2/conf.d/pdo_sqlsrv.ini; \
     rm -rf $SQL_TMP; \
     echo "Finished installing SQL Server PHP Extensions";
-
+    
 COPY ./src/ ./
-
-RUN set eux; \
-    chown root:root /usr/local/bin/entrypoint.sh; \
-    chmod a+x /usr/local/bin/entrypoint.sh;
-
+    
 EXPOSE 80 443
-
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+    
+ENTRYPOINT ["/usr/local/bin/app-run"]
