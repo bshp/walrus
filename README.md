@@ -49,6 +49,6 @@ v8.1 = PHP 8.1.x, SQL 5.11.0 (EOL is Nov. 2024)
 #### Build:
     
 ````
-docker build . --pull --build-arg PHP_VERSION=8.1 --build-arg SQL_VERSION=5.11.0 --tag bshp/walrus:latest --progress=plain
+docker build . --pull --build-arg PHP_VERSION=8.1 --build-arg SQL_VERSION=5.11.0 --tag your_tag --progress=plain
 ````
 
