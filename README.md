@@ -1,4 +1,6 @@
-Apache with PHP    
+Apache with PHP
+    
+Since this uses Ubuntu 22.04 as the base, only PHP 8.1.x is available, v8.2 will be added when Ubuntu 24.04 LTS is released in Apr 2024, well before the v8.1 EOL. This route is chosen because it does not rely on a 3rd party repo/ppa.
     
 #### Base OS:    
 Ubuntu Server LTS - Latest
@@ -41,7 +43,6 @@ Add at end of your entrypoint script either of:
 ````
     
 ## Tags:  
-Since this uses Ubuntu 22.04 as the base, only PHP 8.1.x is available, v8.2 will be added when Ubuntu 24.04LTS is released in Apr 2024, well before the v8.1 EOL  
     
 latest = v8.1  
 v8.1 = PHP 8.1.x, SQL 5.11.0 (EOL is Nov. 2024)  
