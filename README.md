@@ -21,7 +21,7 @@ PHP_UPLOAD_MAX_FILESIZE=8M
 ````
     
 #### Note:    
-Some need to be set for certain functions when used direct with app-run, see [Base Scripts](https://github.com/bshp/apache2/tree/master/src/usr/local/bin) for more info
+Some need to be set for certain functions when used direct with app-run, see [Ocie](https://github.com/bshp/ocie) for more info
     
 #### Direct:  
 ````
@@ -36,7 +36,7 @@ docker run \
 #### Custom:  
 Add at end of your entrypoint script either of:  
 ````
-/usr/local/bin/app-run;
+/usr/local/bin/ociectl --run;
 ````
 ````
 /usr/sbin/apachectl -k start -D FOREGROUND;
@@ -50,6 +50,6 @@ v8.1 = PHP 8.1.x, SQL 5.11.0 (EOL is Nov. 2024)
 #### Build:
     
 ````
-docker build . --pull --build-arg PHP_VERSION=8.1 --build-arg SQL_VERSION=5.11.0 --tag your_tag --progress=plain
+docker build . --pull --build-arg VERSION=22.04 --build-arg PHP_VERSION=8.1 --build-arg SQL_VERSION=5.11.0 --tag your_tag --no-cache
 ````
 
