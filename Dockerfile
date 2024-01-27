@@ -26,7 +26,7 @@ ENV PHP_POST_MAX_SIZE=8M
 ENV PHP_UPLOAD_MAX_FILESIZE=8M
 ENV SQL_VERSION=${SQL_VERSION}
     
-RUN <<-EOD bash
+RUN <<"EOD" bash
 	set -eu;
 	export $(cat /etc/environment | xargs);
 	#Add Microsoft Repository, for SQL Server Driver
@@ -71,7 +71,7 @@ EOT
 	echo "Custom PHP INI Location: [ /etc/php/01-custom.ini ], Link: [ /etc/php/${PHP_VERSION}/apache2/conf.d/01-custom.ini ]";
 EOD
     
-RUN <<-EOD bash
+RUN <<-"EOD" bash
     set -eu;
     echo "Installing SQL Server PHP Extensions";
     export $(cat /etc/environment | xargs);
