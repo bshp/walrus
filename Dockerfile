@@ -26,7 +26,7 @@ ENV PHP_POST_MAX_SIZE=8M
 ENV PHP_UPLOAD_MAX_FILESIZE=8M
 ENV SQL_VERSION=${SQL_VERSION}
     
-RUN <<-"EOD" bash
+RUN <<-'EOD' bash
 	set -eu;
 	export $(cat /etc/environment | xargs);
 	#Add Microsoft Repository, for SQL Server Driver
@@ -61,8 +61,8 @@ RUN <<-"EOD" bash
 		upload_max_filesize = ${PHP_UPLOAD_MAX_FILESIZE}
 		[Date]
 		date.timezone = ${PHP_TIMEZONE}
-	EOT
-	);
+EOT
+);
 	echo "$INI" > /etc/php/01-custom.ini;
 	ln -s /etc/php/01-custom.ini /etc/php/${PHP_VERSION}/apache2/conf.d/01-custom.ini;
 	#Cleanup
