@@ -22,7 +22,7 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_TOKEN
     - name: Build 22.04
       run: |
-        docker build . --pull --build-arg VERSION=${{env.STABLE_CHANNEL}} --build-arg PHP_VERSION=8.1 --build-arg SQL_VERSION=5.11.0 --tag bshp/walrus:${{env.STABLE_CHANNEL}} --no-cache
+        docker build . --pull --build-arg OCIE_VERSION=${{env.STABLE_CHANNEL}} --build-arg PHP_VERSION=8.1 --build-arg SQL_VERSION=5.11.0 --tag bshp/walrus:${{env.STABLE_CHANNEL}} --no-cache
     - name: Push 22.04
       run: |
         docker tag bshp/walrus:${{env.STABLE_CHANNEL}} bshp/walrus:latest

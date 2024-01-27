@@ -1,13 +1,12 @@
-# syntax=docker/dockerfile-upstream:master
-# bshp/apache2:version_tag, e.g 22.04 unquoted
-ARG VERSION
+# bshp/ocie:version_tag, e.g 22.04 unquoted
+ARG OCIE_VERSION
 ARG PHP_VERSION=8.1
 ARG SQL_VERSION=5.11.0
     
 # Optional: Change Timezone
 ARG TZ=America/North_Dakota/Center
     
-FROM bshp/apache2:${VERSION}
+FROM bshp/apache2:${OCIE_VERSION}
     
 LABEL org.opencontainers.image.authors="jason.everling@gmail.com"
     
