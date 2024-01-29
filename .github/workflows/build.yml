@@ -1,11 +1,6 @@
 name: Docker CI
 on:
   workflow_dispatch:
-  push:
-    branches: [ master ]
-    paths-ignore:
-      - '.gitignore'
-      - 'README.md'
 env:
   BETA_CHANNEL: 24.04
   STABLE_CHANNEL: 22.04
