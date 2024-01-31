@@ -57,7 +57,9 @@ zip
 ````
     
 ## Environment Variables:  
-see [Base Image](https://github.com/bshp/apache2/blob/master/Dockerfile) for more variables
+    
+see [Ocie Environment](https://github.com/bshp/ocie/blob/main/Environment.md) for more variables
+    
 ````
 PHP_TIMEZONE=${OS_TIMEZONE}
 PHP_ERROR_LOG=/var/log/apache2/php_error.log
@@ -67,9 +69,6 @@ PHP_MEMORY_LIMIT=128M
 PHP_POST_MAX_SIZE=8M
 PHP_UPLOAD_MAX_FILESIZE=8M
 ````
-    
-#### Note:    
-Some need to be set for certain functions when used direct with app-run, see [Ocie](https://github.com/bshp/ocie) for more info
     
 #### Direct:  
 ````
