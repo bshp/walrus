@@ -39,7 +39,7 @@ RUN <<-"EOD" bash
         php-mbstring,php-mysql,php-odbc,php-opcache,php-pdo,php-pspell,php-readline,php-shmop,php-soap,php-simplexml,php-sqlite3,php-xml,php-xmlrpc,\
         php-zip,php-pear,php-xdebug";
     #Install Packages
-    ocie --dhparams "-size ${DH_PARAM_SIZE}" --pkg "-add $(echo $PKGS | tr -d ' ')" --keys "-subject ${CERT_SUBJECT} -tag 'default.keys'";
+    ocie --dhparams "-size ${DH_PARAM_SIZE}" --pkg "-add $(echo $PKGS | tr -d ' ')" --keys "-subject ${CERT_SUBJECT} -tag default.keys";
     echo "Creating Custom PHP ini settings";
     INI=$(cat <<-'EOT' | sed 's/^ *//g'
         ;Custom PHP Settings
