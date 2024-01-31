@@ -14,7 +14,6 @@ ARG TZ
 ARG PHP_VERSION
 ARG SQL_VERSION
     
-ENV OCIE_CONFIG=/etc/apache2
 ENV PHP_VERSION=${PHP_VERSION}
 ENV PHP_TIMEZONE=${OS_TIMEZONE}
 ENV PHP_ERROR_LOG=/var/log/apache2/php_error.log
@@ -24,6 +23,8 @@ ENV PHP_MEMORY_LIMIT=128M
 ENV PHP_POST_MAX_SIZE=8M
 ENV PHP_UPLOAD_MAX_FILESIZE=8M
 ENV SQL_VERSION=${SQL_VERSION}
+# Ocie
+ENV OCIE_CONFIG=/etc/apache2
     
 RUN <<-"EOD" bash
     set -eu;
@@ -38,7 +39,7 @@ RUN <<-"EOD" bash
         php-mbstring,php-mysql,php-odbc,php-opcache,php-pdo,php-pspell,php-readline,php-shmop,php-soap,php-simplexml,php-sqlite3,php-xml,php-xmlrpc,\
         php-zip,php-pear,php-xdebug";
     #Install Packages
-    ocie --dhparams "-size ${DH_PARAM_SIZE}" --pkg "-add $(echo $PKGS | tr -d ' ')" --keys "-subject ${CERT_SUBJECT}";
+    ocie --dhparams "-size ${DH_PARAM_SIZE}" --pkg "-add $(echo $PKGS | tr -d ' ')" --keys "-subject ${CERT_SUBJECT} -tag 'default.keys'";
     echo "Creating Custom PHP ini settings";
     INI=$(cat <<-'EOT' | sed 's/^ *//g'
         ;Custom PHP Settings
