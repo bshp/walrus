@@ -3,14 +3,8 @@ ARG OCIE_VERSION
 ARG PHP_VERSION=8.1
 ARG SQL_VERSION=5.11.0
     
-# Optional: Change Timezone
-ARG TZ=America/North_Dakota/Center
-    
 FROM bshp/apache2:${OCIE_VERSION}
     
-LABEL org.opencontainers.image.authors="jason.everling@gmail.com"
-    
-ARG TZ
 ARG PHP_VERSION
 ARG SQL_VERSION
     
