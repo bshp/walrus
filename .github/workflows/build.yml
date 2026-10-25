@@ -2,8 +2,8 @@ name: Docker CI
 on:
   workflow_dispatch:
 env:
-  BETA_CHANNEL: 24.04
-  STABLE_CHANNEL: 22.04
+  BETA_CHANNEL: 28.04
+  STABLE_CHANNEL: 26.04
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,10 +15,10 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USER }}
         password: ${{ secrets.DOCKER_TOKEN }}
-    - name: Build 22.04
+    - name: Build 26.04
       run: |
-        docker build . --pull --build-arg OCIE_VERSION=${{env.STABLE_CHANNEL}} --build-arg PHP_VERSION=8.1 --build-arg SQL_VERSION=5.11.0 --tag bshp/walrus:${{env.STABLE_CHANNEL}} --no-cache
-    - name: Push 22.04
+        docker build . --pull --build-arg OCIE_VERSION=${{env.STABLE_CHANNEL}} --build-arg PHP_VERSION=8.5 --build-arg SQL_VERSION=5.13.3 --tag bshp/walrus:${{env.STABLE_CHANNEL}} --no-cache
+    - name: Push 26.04
       run: |
         docker tag bshp/walrus:${{env.STABLE_CHANNEL}} bshp/walrus:latest
         docker push bshp/walrus:${{env.STABLE_CHANNEL}}
