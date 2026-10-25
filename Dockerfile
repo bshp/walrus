@@ -73,8 +73,8 @@ RUN <<-"EOD" bash
     EXT_DIR=$(php-config --extension-dir);
     SQL_TMP="$(mktemp -d)";
     SQL_CAT=$(echo "${PHP_VERSION}" | sed 's/[^0-9]*//g');
-    wget --quiet "https://github.com/microsoft/msphpsql/releases/download/v${SQL_VERSION}/Ubuntu${OS_VERSION}-${PHP_VERSION}.tar" -O $SQL_TMP/mssql.tar;
-    tar -xf $SQL_TMP/mssql.tar -C $SQL_TMP --strip-components=1;
+    wget --quiet "https://github.com/microsoft/msphpsql/releases/download/v${SQL_VERSION}/Linux_${PHP_VERSION}RTW.tar.gz" -O $SQL_TMP/mssql.tar.gz;
+    tar -xzf $SQL_TMP/mssql.tar -C $SQL_TMP --strip-components=1;
     mv $SQL_TMP/php_sqlsrv_${SQL_CAT}_nts.so $EXT_DIR/sqlsrv.so;
     mv $SQL_TMP/php_pdo_sqlsrv_${SQL_CAT}_nts.so $EXT_DIR/pdo_sqlsrv.so;
     printf "; priority=20\nextension=sqlsrv.so\n" > /etc/php/${PHP_VERSION}/apache2/conf.d/sqlsrv.ini;
