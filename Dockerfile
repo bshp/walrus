@@ -27,9 +27,9 @@ RUN <<-"EOD" bash
     echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/ubuntu/${OS_BASE}/prod ${OS_CODENAME} main" \
         | tee /etc/apt/sources.list.d/microsoft-prod.list > /dev/null;
     #Set PHP Packages
-    PKGS="php${PHP_VERSION},libapache2-mod-php,php-cli,php-dev,unzip,zip,libaio1,libcurl4,libgss3,libldap-common,libmcrypt-dev,libxml2,libxslt1.1,\
+    PKGS="php${PHP_VERSION},libapache2-mod-php,php-cli,php-dev,unzip,zip,libaio1t64,libcurl4,libgss3,libldap-common,libmcrypt-dev,libxml2,libxslt1.1,\
         libzip-dev,locales,msodbcsql18,odbcinst,sassc,unixodbc,unixodbc-dev,php-bcmath,php-curl,php-gd,php-iconv,php-intl,php-json,php-ldap,\
-        php-mbstring,php-mysql,php-odbc,php-opcache,php-pdo,php-pspell,php-readline,php-shmop,php-soap,php-simplexml,php-sqlite3,php-xml,php-xmlrpc,\
+        php-mbstring,php-mysql,php-odbc,php-pdo,php-pspell,php-readline,php-shmop,php-soap,php-simplexml,php-sqlite3,php-xml,php-xmlrpc,\
         php-zip,php-pear,php-xdebug";
     #Install Packages
     ocie --dhparams "-size ${DH_PARAM_SIZE}" --pkg "-add $(echo $PKGS | tr -d ' ')" --keys "-subject ${CERT_SUBJECT} -tag default.keys";
