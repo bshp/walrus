@@ -23,7 +23,7 @@ RUN <<-"EOD" bash
     set -eu;
     export $(cat /etc/environment | xargs);
     #Add Microsoft Repository, for SQL Server Driver
-    wget --quiet "https://packages.microsoft.com/keys/microsoft.asc" -O- | gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg;
+    wget --quiet "https://packages.microsoft.com/keys/microsoft-2025.asc" -O- | gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg;
     echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/ubuntu/${OS_BASE}/prod ${OS_CODENAME} main" \
         | tee /etc/apt/sources.list.d/microsoft-prod.list > /dev/null;
     #Set PHP Packages
